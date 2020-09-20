@@ -3,6 +3,7 @@
 
 import json
 from difflib import get_close_matches
+import time
 
 
 data = json.load(open("data\\data.json"))
@@ -28,4 +29,11 @@ def translate(some_word):
 
 word = input("Enter a word: ")
 
-print(translate(word))
+output = translate(word)
+
+if type(output) == list:
+    for item in output:
+        print(item)
+        time.sleep(3)
+else:
+    print(output)
