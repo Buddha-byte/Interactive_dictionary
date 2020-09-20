@@ -6,7 +6,7 @@ from difflib import get_close_matches
 import time
 
 
-data = json.load(open("data\\data.json"))
+data = json.load(open("data//data.json"))
 
 
 def translate(some_word):
