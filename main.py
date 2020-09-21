@@ -1,16 +1,12 @@
 #!/usr/bin/env python3
 
 
-import json
 from difflib import get_close_matches
 import time
 import mysql.connector
 
 
-
-
 def translate(some_word):
-    some_word = some_word.lower()
 
     con = mysql.connector.connect(
         user="ardit700_student",
@@ -21,24 +17,29 @@ def translate(some_word):
 
     cursor = con.cursor()
 
-    query = cursor.execute("SELECT * FROM Dictionary WHERE Expression='%s'" % some_word)
-    data = cursor.fetchall()
+    some_word = some_word.lower()
 
-    for words_tuple in data:
-        if some_word == words_tuple[0]:
-            return data
-        else:
-            if len(get_close_matches(some_word, words_tuple[0])) > 0:
-                yn = input("Did you mean: %s? print Y for yes, or N for no" % get_close_matches(some_word, data[0]))
-                yn.lower()
-                if yn == "y":
-                    for word in data:
-                        print(word[1])
-                        time.sleep(5)
-                elif yn == "n":
-                    return "The word doesn't exist"
-                else:
-                    return "I don't understand you!"
+    query = cursor.execute("SELECT Expression from Dictionary")
+
+    keys = [b[0] for b in cursor.fetchall()]
+
+    for key in keys:
+        matches_words = get_close_matches(some_word, key)
+        for word in matches_words:
+            print(word)
+        # if len(matches_words) > 0:
+        #     yn = input("Did you mean %s ? Y for yes or N for no: " % matches_words[0])
+        #     yn.lower()
+        #     if yn == 'y':
+        #         query_01 = cursor.execute("SELECT * FROM Dictionary WHERE Expression = '%s'" % some_word)
+        #         data_query = cursor.fetchall()
+        #         for word_def in data_query:
+        #             print(word_def[1])
+        #             time.sleep(5)
+        #     if yn == 'n':
+        #         print("Try one more time!")
+        #     else:
+        #         print("The word doesn't exist")
 
 
 word = input("Enter a word: ")
