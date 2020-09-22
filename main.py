@@ -8,7 +8,7 @@ import mysql.connector
 
 def translate(some_word):
     """
-    Return defenition, type: str
+    Print defenition, return nothing
     """
     con = mysql.connector.connect(
         user="ardit700_student",
@@ -29,18 +29,19 @@ def translate(some_word):
         query_01 = cursor.execute("SELECT * FROM Dictionary WHERE Expression = '%s'" % some_word)
         data_query = cursor.fetchall()
         for result in data_query:
-            return result[1]
+            print(result[1])
             time.sleep(5)
     elif len(get_close_matches(some_word, keys)) > 0:  # Make a match list from user request
         query_01 = cursor.execute("SELECT * FROM Dictionary WHERE Expression = '%s'" % get_close_matches(some_word, keys)[0])
         data_query = cursor.fetchall()
         for result in data_query:
-            return result[1]
+            print(result[1])
             time.sleep(5)
     else:
-        return "The word doesn't exist"
+        print("The word doesn't exist")
 
 
-word = input("Enter a word: ")
+if __name__ == "__main__":
 
-output = translate(word)
+    word = input("Enter a word: ")
+    output = translate(word)
