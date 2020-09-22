@@ -23,20 +23,20 @@ def translate(some_word):
 
     keys = [b[0] for b in cursor.fetchall()]
 
-    matches_words = get_close_matches(some_word, keys)
-    if len(matches_words) > 0:
-        yn = input("Did you mean %s ? Y for yes or N for no: " % matches_words[0])
-        yn.lower()
-        if yn == 'y':
-            query_01 = cursor.execute("SELECT * FROM Dictionary WHERE Expression = '%s'" % matches_words[0])
-            data_query = cursor.fetchall()
-            for word_def in data_query:
-                print(word_def[1])
-                time.sleep(5)
-        if yn == 'n':
-            print("Try one more time!")
-        else:
-            print("The word doesn't exist")
+    if some_word in keys:
+        query_01 = cursor.execute("SELECT * FROM Dictionary WHERE Expression = '%s'" % some_word)
+        data_query = cursor.fetchall()
+        for result in data_query:
+            print(result[1])
+            time.sleep(5)
+    elif len(get_close_matches(some_word, keys)) > 0:
+        query_01 = cursor.execute("SELECT * FROM Dictionary WHERE Expression = '%s'" % get_close_matches(some_word, keys)[0])
+        data_query = cursor.fetchall()
+        for result in data_query:
+            print(result[1])
+            time.sleep(5)
+    else:
+        print("The word doesn't exist")
 
 
 word = input("Enter a word: ")
