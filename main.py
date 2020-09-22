@@ -7,7 +7,9 @@ import mysql.connector
 
 
 def translate(some_word):
-
+    """
+    Return defenition, type: str
+    """
     con = mysql.connector.connect(
         user="ardit700_student",
         password="ardit700_student",
@@ -23,20 +25,20 @@ def translate(some_word):
 
     keys = [b[0] for b in cursor.fetchall()]
 
-    if some_word in keys:
+    if some_word in keys:   # Iteration through the list of expressions from database
         query_01 = cursor.execute("SELECT * FROM Dictionary WHERE Expression = '%s'" % some_word)
         data_query = cursor.fetchall()
         for result in data_query:
-            print(result[1])
+            return result[1]
             time.sleep(5)
-    elif len(get_close_matches(some_word, keys)) > 0:
+    elif len(get_close_matches(some_word, keys)) > 0:  # Make a match list from user request
         query_01 = cursor.execute("SELECT * FROM Dictionary WHERE Expression = '%s'" % get_close_matches(some_word, keys)[0])
         data_query = cursor.fetchall()
         for result in data_query:
-            print(result[1])
+            return result[1]
             time.sleep(5)
     else:
-        print("The word doesn't exist")
+        return "The word doesn't exist"
 
 
 word = input("Enter a word: ")
