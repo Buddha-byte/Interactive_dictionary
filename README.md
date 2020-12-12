@@ -1,2 +1,2 @@
-# Interactive_dictionary
+# Interactive dictionary
 Simple english explanatory dictionary
